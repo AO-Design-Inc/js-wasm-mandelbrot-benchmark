@@ -1,4 +1,5 @@
 import { returnImprovedjs } from "./benchmarks/improved-js/script.js";
+import { returnNaivejs } from "./benchmarks/naive-js/script.js";
 
 let time = document.getElementById("time");
 let canvas = document.getElementById("canvas");
@@ -18,12 +19,20 @@ selectElement.addEventListener('change', (event) => {
     selectedVersion = event.target.value;
     
     let imageData;
+    let start;
+    let end;
 
     switch(selectedVersion){
+        case 'naivejs':
+            start = performance.now();
+            imageData = returnNaivejs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, CANVAS_HEIGHT, WINDOW);
+            end = performance.now();
+            time.textContent = end-start;
+            break;
         case 'improvedjs':
-            let start = performance.now();
+            start = performance.now();
             imageData = returnImprovedjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, CANVAS_HEIGHT, WINDOW);
-            let end = performance.now();
+            end = performance.now();
             time.textContent = end-start;
             break;
     }

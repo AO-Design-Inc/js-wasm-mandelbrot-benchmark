@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MandelBrot</title>
 
+    <script type="module" src="benchmarks/naive-js/script.js"></script>
     <script type="module" src="benchmarks/improved-js/script.js"></script>
     <script type="module" src="index.js"></script>
 
@@ -16,6 +17,9 @@
         Show Me MandelBrot in: 
         
         <select name="version" id="version">
+            <option value="none" selected disabled hidden>
+                Select an Option
+            </option>
             <option value="naivejs">Naive JS</option>
             <option value="improvedjs">Improved JS</option>
         </select>
@@ -23,7 +27,7 @@
         <p>Time to render: </p>
         <p id="time"></p>
     </div>
-    <canvas id="canvas" height="1000" width="1000"></canvas>
+    <canvas id="canvas" height="1000" width="1000" style="width:50%"></canvas>
    
 </body>
 </html>
