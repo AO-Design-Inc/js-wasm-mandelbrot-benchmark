@@ -5,10 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MandelBrot</title>
+
+    <script type="module" src="benchmarks/improved-js/script.js"></script>
+    <script type="module" src="index.js"></script>
+
 </head>
 <body>
-    Mandelbrot
+
+    <div>
+        Show Me MandelBrot in: 
+        
+        <select name="version" id="version">
+            <option value="naivejs">Naive JS</option>
+            <option value="improvedjs">Improved JS</option>
+        </select>
+
+        <p>Time to render: </p>
+        <p id="time"></p>
+    </div>
     <canvas id="canvas" height="1000" width="1000"></canvas>
-    <script src="index.js"></script>
+   
 </body>
 </html>
