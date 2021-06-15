@@ -1,7 +1,3 @@
-self.importScripts("/benchmarks/improved-js/script.js");
-self.importScripts("/benchmarks/naive-js/script.js");
-
-
 //let canvas = document.getElementById("canvas");
 const CANVAS_WIDTH = 1000;
 const CANVAS_HEIGHT = 1000;
@@ -13,17 +9,25 @@ let imageData;
 let start;
 let end;
 
-onmessage = function(e) {
+onmessage = async function(e) {
     console.log('Message received from main script');
 
     start = performance.now();
 
     switch (e.data){
         case 'naivejs':
+            self.importScripts("/benchmarks/naive-js/script.js");
             imageData = returnNaivejs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, CANVAS_HEIGHT, WINDOW);
             break;
         case 'improvedjs':
+            self.importScripts("/benchmarks/improved-js/script.js");
             imageData = returnImprovedjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, CANVAS_HEIGHT, WINDOW);
+            break;
+        case 'multijs':
+            self.importScripts("/benchmarks/multithreaded-js/script.js");
+            await returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, CANVAS_HEIGHT, WINDOW).then((data) => {
+                imageData = data;
+            })
             break;
     }
 
