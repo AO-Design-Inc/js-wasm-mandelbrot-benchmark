@@ -1,13 +1,12 @@
 function createWorker(parameters){
   return new Promise(() => {
-    var worker = new Worker('/sharedworker.js');
+    var worker = new Worker("sharedworker.js");
 
     worker.postMessage(parameters);
 
     worker.onmessage = function(){
       const end = performance.now();
       time.textContent = end-start;
-      return draw(sharedArray);
     }
   });
 }
