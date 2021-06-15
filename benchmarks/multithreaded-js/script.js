@@ -1,4 +1,16 @@
+function createWorker(parameters){
+  return new Promise(() => {
+    var worker = new Worker('/sharedworker.js');
 
+    worker.postMessage(parameters);
+
+    worker.onmessage = function(){
+      const end = performance.now();
+      time.textContent = end-start;
+      return draw(sharedArray);
+    }
+  });
+}
 
 async function returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, CANVAS_HEIGHT, WINDOW){
   
@@ -12,33 +24,37 @@ async function returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, 
   const sharedArray = new Uint8ClampedArray(sharedBuffer)
   sharedArray.fill(0);
 
-  let doneCount = 0;
-
-for(let i=0; i<workerCount; i++){
-  console.log("sharedArray");
-
-  const worker = new Worker("sharedworker.js");
-  const INDEXES_PER_WORKER = Math.floor((X_LEN*Y_LEN)/workerCount);
+  //const INDEXES_PER_WORKER = Math.floor((X_LEN*Y_LEN)/workerCount);
   const N_ROWS_PER_THREAD = Math.floor(X_LEN/workerCount);
-  const START_XC = N_ROWS_PER_THREAD * i;
-  var START_INDEX = i*INDEXES_PER_WORKER;
-  var END_INDEX= START_INDEX + INDEXES_PER_WORKER;
-  
-  worker.onmessage = ({data}) => {
-    console.log(doneCount);
-    doneCount++;
-    if(doneCount == workerCount) {
-      const end = performance.now();
-      time.textContent = end-start;
-      return draw(sharedArray);
-    }
+  var START_XC = N_ROWS_PER_THREAD;
+
+  var parameters = [START_X_TOTAL,START_Y_TOTAL, START_XC, STEP_X, STEP_Y, N_ROWS_PER_THREAD, Y_LEN, sharedArray];
+  var promises = [];
+
+  for(let i=0; i<workerCount; i++){
+    console.log("sharedArray");
+
+    //const worker = new Worker("sharedworker.js");
+
+    parameters[2] = N_ROWS_PER_THREAD * i;
+
+ /*   worker.postMessage({
+      START_X_TOTAL,START_Y_TOTAL,START_XC, STEP_X, STEP_Y, N_ROWS_PER_THREAD, Y_LEN,sharedArray
+    }); */
+
+    promises.push(createWorker(parameters));
   }
 
-  worker.postMessage({
-    START_X_TOTAL,START_Y_TOTAL,START_XC, STEP_X, STEP_Y, N_ROWS_PER_THREAD, Y_LEN,sharedArray
+  Promise.all(promises)
+  .then(() => {
+      return draw(sharedArray);
   });
 
-}
+/*  worker.onmessage = function(){
+    const end = performance.now();
+    time.textContent = end-start;
+    return draw(sharedArray);
+  } */
 
 }
 
