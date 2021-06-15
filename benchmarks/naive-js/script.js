@@ -43,7 +43,7 @@ function mandelbrot(cplx) {
 }
 
 // returns ImageData object with Mandelbrot
-export function returnNaivejs(x_start, y_start, canvas_width, canvas_height, window) {
+function returnNaivejs(x_start, y_start, canvas_width, canvas_height, window) {
 
   const step_X = window/canvas_width;
   const step_Y = window/canvas_height;

@@ -1,41 +1,28 @@
-import { returnImprovedjs } from "./benchmarks/improved-js/script.js";
-import { returnNaivejs } from "./benchmarks/naive-js/script.js";
-
 let time = document.getElementById("time");
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext('2d');
 
 
-const CANVAS_WIDTH = canvas.width;
-const CANVAS_HEIGHT = canvas.height;
-const START_X_TOTAL = 0.300283;
-const START_Y_TOTAL =  -0.48857;
-const WINDOW = 0.01;
-
 const selectElement = document.querySelector('#version');
 let selectedVersion = selectElement.value;
+let imageData;
+
+// creates a module worker
+var myWorker = new Worker('worker.js', { type: 'module' });
 
 selectElement.addEventListener('change', (event) => {
     selectedVersion = event.target.value;
     
-    let imageData;
-    let start;
-    let end;
+    // sends selected version to webworker to be evaluated
+    myWorker.postMessage(selectedVersion);
+    console.log("Message Posted to Worker")
 
-    switch(selectedVersion){
-        case 'naivejs':
-            start = performance.now();
-            imageData = returnNaivejs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, CANVAS_HEIGHT, WINDOW);
-            end = performance.now();
-            time.textContent = end-start;
-            break;
-        case 'improvedjs':
-            start = performance.now();
-            imageData = returnImprovedjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, CANVAS_HEIGHT, WINDOW);
-            end = performance.now();
-            time.textContent = end-start;
-            break;
+    // on response from webworker, throw it on the canvas
+    myWorker.onmessage = function(e) {
+        console.log(e.data);
+        ctx.putImageData(e.data[0], 0, 0);
+        time.textContent = e.data[1]
+        console.log('Message received from worker');
     }
 
-    ctx.putImageData(imageData, 0, 0);
 });
