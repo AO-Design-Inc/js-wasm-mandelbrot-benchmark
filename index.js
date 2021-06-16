@@ -6,21 +6,24 @@ const selectElement = document.querySelector('#version');
 let selectedVersion = selectElement.value;
 let imageData;
 
+const WIDTH = canvas.width;
+const HEIGHT = canvas.height;
 
 selectElement.addEventListener('change', (event) => {
 
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
     selectedVersion = event.target.value;
 
     // creates a module worker
     var myWorker = new Worker('worker.js');
     
     // sends selected version to webworker to be evaluated
-    myWorker.postMessage(selectedVersion);
+    myWorker.postMessage([selectedVersion, WIDTH, HEIGHT]);
     console.log("Message Posted to Worker")
 
-    time.textContent = "Loading";
+    time.textContent = "Loading...";
 
-    // on response from webworker, throw it on the canvas
+    // gets [ImageData, time_to_execute] from webworker
     myWorker.onmessage = function(e) {
         ctx.putImageData(e.data[0], 0, 0);
         time.textContent = e.data[1]
