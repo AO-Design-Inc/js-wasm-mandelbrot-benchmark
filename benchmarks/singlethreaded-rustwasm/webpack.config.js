@@ -1,21 +1,27 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
-const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
+//const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 
 module.exports = {
-    entry: '../../index.js',
+    entry: './Mandelbrot.js',
+    target: 'webworker',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'index.js',
+        filename: 'index.js'
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: '../../index.html'
-        }),
+        new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: 1
+        }),    
+        new CleanWebpackPlugin(),
+        /*
         new WasmPackPlugin({
             crateDirectory: path.resolve(__dirname, ".")
         }),
+        */
         // Have this example work in Edge which doesn't ship `TextEncoder` or
         // `TextDecoder` at this time.
         new webpack.ProvidePlugin({
@@ -23,5 +29,14 @@ module.exports = {
           TextEncoder: ['text-encoding', 'TextEncoder']
         })
     ],
+    experiments: {
+        syncWebAssembly: true
+    },
     mode: 'development'
 };
+
+/*
+new HtmlWebpackPlugin({
+            template: '../../index.html'
+        }),
+        */
