@@ -15,7 +15,7 @@ function mandelbrot(cplx) {
   const ITER_CONST = 1000;
 onmessage = function({data}) {
   console.log("worker got called");
-  const{START_X_TOTAL,START_Y_TOTAL,START_XC, STEP_X, STEP_Y, N_ROWS_PER_THREAD, Y_LEN, sharedArray} = {...data};
+  const{START_X_TOTAL,START_Y_TOTAL,START_XC, STEP_X, STEP_Y, N_ROWS_PER_THREAD, Y_LEN, sharedArray} = data;
 
     for(let x = START_X_TOTAL + START_XC * STEP_X, count_x = START_XC; count_x < N_ROWS_PER_THREAD+START_XC; x+=STEP_X, count_x++){
       for( let y = START_Y_TOTAL, count_y =0; count_y < Y_LEN; y+=STEP_Y, count_y++)
