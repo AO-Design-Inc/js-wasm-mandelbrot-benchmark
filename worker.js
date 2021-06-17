@@ -25,6 +25,7 @@ onmessage = async function(e) {
         case 'multijs':
             self.importScripts("/benchmarks/multithreaded-js/script.js");
             imageData = await returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW);
+            debugger;
             break;
     }
 

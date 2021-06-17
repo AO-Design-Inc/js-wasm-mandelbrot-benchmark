@@ -13,30 +13,24 @@ function mandelbrot(cplx) {
 
     
   const ITER_CONST = 1000;
-onmessage = function({data}) {
-  console.log("worker got called");
-  const{START_X_TOTAL,START_Y_TOTAL,START_XC, STEP_X, STEP_Y, N_ROWS_PER_THREAD, Y_LEN, sharedArray} = data;
-
-    for(let x = START_X_TOTAL + START_XC * STEP_X, count_x = START_XC; count_x < N_ROWS_PER_THREAD+START_XC; x+=STEP_X, count_x++){
-      for( let y = START_Y_TOTAL, count_y =0; count_y < Y_LEN; y+=STEP_Y, count_y++)
+  onmessage = function({data}) {
+    const{START_X_TOTAL,START_Y_TOTAL,START_YC, STEP_X, STEP_Y, N_ROWS_PER_THREAD, X_LEN, sharedArray} = data;
+    for( let y = START_Y_TOTAL+ START_YC * STEP_Y, count_y =START_YC; count_y < N_ROWS_PER_THREAD+START_YC; y+=STEP_Y, count_y++)
+    {
+      for(let x = START_X_TOTAL , count_x = 0; count_x < X_LEN; x+=STEP_X, count_x++)
       {
-          val= mandelbrot(new Complex(x,y));
-
-
-          sharedArray[count_x * Y_LEN + count_y + 0] = val; 
-          sharedArray[count_x * Y_LEN + count_y + 1] = val;
-          sharedArray[count_x * Y_LEN + count_y+ 2] = val; 
-          sharedArray[count_x * Y_LEN + count_y + 3] = 255;
-
         
+        let index = 4*(count_x  + count_y* X_LEN);
+        val = mandelbrot(new Complex(x,y));
+         sharedArray[index+ 0] = val; 
+         sharedArray[index+ 1] = val; 
+         sharedArray[index+ 2] = val; 
+         sharedArray[index+ 3] = 255;      
       }
     }
-    console.log("worker done");
-
-    postMessage("done");
+      postMessage("done");
   }
-
-
+  
 
 
   class Complex {
