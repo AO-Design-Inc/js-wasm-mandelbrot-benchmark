@@ -1,4 +1,3 @@
-//const { load } = require("mime");
 
 // WIDTH and HEIGHT are passed in from main thread
 const START_X_TOTAL = 0.300283;
@@ -28,20 +27,8 @@ onmessage = async function(e) {
             imageData = await returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW);
             break;
         case 'rustwasm':
-            /*self.importScripts('./benchmarks/singlethreaded-rustwasm/pkg/Mandelbrot.js');
-            //imageData = await __exports.run(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW); */
-
-            console.log("outside instanstion");
-
-            let obj = await WebAssembly.instantiateStreaming(
-                fetch('./benchmarks/singlethreaded-rustwasm/pkg/Mandelbrot_bg.wasm'), 
-                {},
-            );
-        
-            console.log("after instantiate");
-            imageData = await obj.instance.exports.run(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW);
-            console.log(imageData);
-  
+            self.importScripts('./benchmarks/singlethreaded-rustwasm/Mandelbrot.js');
+            imageData = await run_wrapper(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW); 
             break;
     }
 

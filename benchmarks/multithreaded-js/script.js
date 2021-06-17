@@ -42,6 +42,7 @@ async function returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, 
   debugger;
   const array = new Uint8ClampedArray([...sharedArray]);
   return new ImageData(array, CANVAS_WIDTH, CANVAS_HEIGHT);
+  //return draw(array, CANVAS_WIDTH, CANVAS_HEIGHT);
 
 }
 

@@ -1,3 +1,4 @@
+
 let wasm;
 
 const heap = new Array(32).fill(undefined);
@@ -188,7 +189,7 @@ function handleError(f, args) {
 * @param {number} window
 * @returns {any}
 */
-function run(start_x, start_y, width, height, window) {
+ function run(start_x, start_y, width, height, window) {
     var ret = wasm.run(start_x, start_y, width, height, window);
     return takeObject(ret);
 }
@@ -226,7 +227,6 @@ async function load(module, imports) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        //input = new URL('./benchmarks/singlethreaded-rustwasm/pkg/Mandelbrot_bg.wasm', import.meta.url);
     }
     const imports = {};
     imports.wbg = {};
@@ -279,15 +279,16 @@ async function init(input) {
 }
 
 
+
 async function run_wrapper(START_X, START_Y, WIDTH, HEIGHT, WINDOW){
 
-  //let m = await wasm;
-
-  await init('./benchmarks/singlethreaded-rustwasm/pkg/Mandelbrot_bg.wasm');
-
-  let imageData = run(START_X, START_Y, WIDTH, HEIGHT, WINDOW); 
-
-  return imageData;
-
-
-}
+    //let m = await wasm;
+  
+    await init('./benchmarks/singlethreaded-rustwasm/pkg/Mandelbrot_bg.wasm');
+  
+    let imageData = run(START_X, START_Y, WIDTH, HEIGHT, WINDOW); 
+  
+    return imageData;
+  
+  
+  }
