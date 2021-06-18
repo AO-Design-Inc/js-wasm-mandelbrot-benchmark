@@ -66,8 +66,8 @@ function mandelbrot(real:f64,imag:f64):u8{
 
 const step_X:f32 = WINDOW/f32(canvas_width);
 const step_Y:f32 = WINDOW/f32(canvas_height);
-for (let x = START_X_TOTAL, count_x = 0; count_x < canvas_width; x += step_X, count_x++){
-	for (let y = START_Y_TOTAL, count_y = 0; count_y < canvas_height; y += step_Y, count_y++){
-		store<u8>(count_x*canvas_height + count_y, mandelbrot(x,y));
+for (let y = START_Y_TOTAL, count_y = 0; count_y < canvas_height; y += step_Y, count_y++){
+	for (let x = START_X_TOTAL, count_x = 0; count_x < canvas_width; x += step_X, count_x++){
+		store<u8>(count_y*canvas_width + count_x, mandelbrot(x,y));
 	}
 }
