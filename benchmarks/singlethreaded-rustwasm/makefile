@@ -1,6 +1,7 @@
 current_dir = $(shell pwd)
 build:
 	npm install
+	npx wasm-pack build --target web
 	$(current_dir)/do_work.sh
 	
 #chmod u+x ./do_work.sh
