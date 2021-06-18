@@ -29,7 +29,6 @@ async function returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, 
   var promises = [];
 
   for(let i=0; i<workerCount; i++){
-    console.log("sharedArray");
 
     parameters.START_YC = N_ROWS_PER_THREAD * i;
 
@@ -37,10 +36,7 @@ async function returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, 
   }
 
   const promises_done = await Promise.all(promises);
-  debugger;
   const array = new Uint8ClampedArray(sharedArray);
-  console.log(sharedArray);
-
   return new ImageData(array, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
