@@ -26,7 +26,7 @@ selectElement.addEventListener('change', (event) => {
     // gets [ImageData, time_to_execute] from webworker
     myWorker.onmessage = function(e) {
         ctx.putImageData(e.data[0], 0, 0);
-        time.textContent = e.data[1]
+        time.textContent = e.data[1] + " ms";
         console.log('Message received from worker');
         myWorker.terminate();
     }
