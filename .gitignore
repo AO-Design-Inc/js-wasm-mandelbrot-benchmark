@@ -3,11 +3,3 @@ benchmarks/singlethreaded-rustwasm/Cargo.lock
 benchmarks/singlethreaded-rustwasm/package-lock.json
 benchmarks/singlethreaded-rustwasm/target
 benchmarks/singlethreaded-rustwasm/pkg
-
-benchmarks/multithreaded-rustwasm/target
-benchmarks/multithreaded-rustwasm/Cargo.lock
-benchmarks/multithreaded-rustwasm/wasm_threads_test_bg.wasm
-benchmarks/multithreaded-rustwasm/wasm_threads_test_bg.wasm.d.ts
-benchmarks/multithreaded-rustwasm/wasm_threads_test.d.ts
-benchmarks/multithreaded-rustwasm/wasm_threads_test.js
-benchmarks/multithreaded-rustwasm/wasm-bindgen.tar.gz
