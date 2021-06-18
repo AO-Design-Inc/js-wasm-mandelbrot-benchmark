@@ -11,27 +11,51 @@ let imageData;
 const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
 
+const LOADING = 'Loading...';
+
+var myWorker;
+
+const refreshButton = document.getElementById('refresh');
+
+refreshButton.addEventListener('click', () => {
+    if(selectElement.value !== 'none') {
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+        myWorker.postMessage([selectedVersion, WIDTH, HEIGHT]);
+        console.log("Message Posted to Worker")
+    
+        time.textContent = LOADING;
+    
+        // gets [ImageData, time_to_execute] from webworker
+        myWorker.onmessage = function(e) {
+            ctx.putImageData(e.data[0], 0, 0);
+            time.textContent = e.data[1];
+        }
+    }
+    
+});
+
 selectElement.addEventListener('change', (event) => {
 
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     selectedVersion = event.target.value;
 
-    // creates a module worker
-    var myWorker = new Worker('worker.js');
+    // creates a new module worker
+    if (myWorker){
+        myWorker.terminate();
+    }
+    myWorker = new Worker('worker.js');
     
     // sends selected version to webworker to be evaluated
     myWorker.postMessage([selectedVersion, WIDTH, HEIGHT]);
-    console.log("Message Posted to Worker")
+    console.log("Message Posted to Worker");
 
-    time.textContent = "Loading...";
+    time.textContent = LOADING;
 
     // gets [ImageData, time_to_execute] from webworker
     myWorker.onmessage = function(e) {
         ctx.putImageData(e.data[0], 0, 0);
-        time.textContent = e.data[1]
-        console.log('Message received from worker');
-        myWorker.terminate();
+        time.textContent = e.data[1];
     }
 
-    
 });
