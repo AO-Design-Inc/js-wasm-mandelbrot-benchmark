@@ -1,0 +1,3 @@
+tasks:
+- init: cd benchmarks/singlethreaded-rustwasm && make build
+  command: python3 server.py

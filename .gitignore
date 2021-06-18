@@ -1,0 +1,5 @@
+benchmarks/singlethreaded-rustwasm/node_modules
+benchmarks/singlethreaded-rustwasm/Cargo.lock
+benchmarks/singlethreaded-rustwasm/package-lock.json
+benchmarks/singlethreaded-rustwasm/target
+benchmarks/singlethreaded-rustwasm/pkg
