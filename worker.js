@@ -30,10 +30,6 @@ onmessage = async function(e) {
             self.importScripts('./benchmarks/singlethreaded-rustwasm/Mandelbrot.js');
             imageData = await run_wrapper(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW); 
             break;
-        case 'm-rustwasm':
-            self.importScripts('./benchmarks/multithreaded-rustwasm/script.js');
-            imageData = load(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW);
-            break;
     }
 
     end = performance.now();
