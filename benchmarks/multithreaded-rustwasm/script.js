@@ -37,14 +37,15 @@ function loadWasm() {
 function load(startX, startY, width, height, window){
   wasm_bindgen('./wasm_threads_test_bg.wasm')
   .then(async () =>{
+    const { Scene, WorkerPool }  = wasm_bindgen;
     let imagedata = await run(startX, startY, width, height, window);
     return imagedata;
   }) 
   .catch(console.error); 
 } 
 
-load(START_X, START_Y, WIDTH, HEIGHT, WINDOW);
-const { Scene, WorkerPool } = wasm_bindgen;
+//load(START_X, START_Y, WIDTH, HEIGHT, WINDOW);
+
 
 async function run(startX, startY, width, height, window){
     console.log("from inside the run");
