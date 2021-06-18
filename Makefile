@@ -1,6 +1,5 @@
-run: build
-	python3 server.py
-
+#run: build
+#python3 server.py
 build:
 	cd benchmarks/assemblyscript-multithreaded && $(MAKE)
 	cd benchmarks/simple-assemblyscript && $(MAKE)
