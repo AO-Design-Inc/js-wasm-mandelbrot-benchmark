@@ -1,0 +1,11 @@
+{
+  "name": "@wasm/empty_ts",
+  "description": "",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "make"
+  },
+  "devDependencies": {
+    "assemblyscript": "^0.19.2"
+  }
+}

@@ -26,6 +26,10 @@ onmessage = async function(e) {
             self.importScripts("/benchmarks/multithreaded-js/script.js");
             imageData = await returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW);
             break;
+        case 'assemblyscript-simple':
+            self.importScripts("/benchmarks/simple-assemblyscript/main.js");
+            imageData = await returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW);
+            break;
     }
 
     end = performance.now();
