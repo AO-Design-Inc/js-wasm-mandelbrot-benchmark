@@ -1,7 +1,9 @@
+const mandel_promise = fetch('build/mandel_final.wasm');
+
 onmessage = ({data}) => {
     const {n_worker, n_threads, memory, width, height, ITER_CONST, START_X_TOTAL, START_Y_TOTAL, WINDOW} = data;
     WebAssembly.instantiateStreaming( 
-    fetch('build/mandel_final.wasm'), {
+    mandel_promise, {
 		env: {
             abort: () => console.log("Abort!"),
             memory: memory,
