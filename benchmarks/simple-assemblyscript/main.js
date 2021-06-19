@@ -8,9 +8,9 @@ function init_wasm(wasm_path, importObj) {
 	// passed in.
 	if(WebAssembly.instantiateStreaming) {
 		return WebAssembly.instantiateStreaming(
-			fetch(wasm_path), importObj)
+			fetch(wasm_path, {cache:"force-cache"}), importObj)
 	} else {
-		return fetch(wasm_path).then(response =>
+		return fetch(wasm_path, {cache:"force-cache"}).then(response =>
 			response.arrayBuffer()
 		).then(bytes =>
 			WebAssembly.instantiate(bytes, importObj)
