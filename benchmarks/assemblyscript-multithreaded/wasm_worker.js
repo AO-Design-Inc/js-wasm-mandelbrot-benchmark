@@ -1,7 +1,7 @@
 onmessage = ({data}) => {
     const {n_worker, n_threads, memory, width, height, START_X_TOTAL, START_Y_TOTAL, WINDOW} = data;
     WebAssembly.instantiateStreaming(
-    fetch('build/mandel_final.wasm'), {
+	    fetch('build/mandel_final.wasm', {cache: "force-cache"}), {
 		env: {
             abort: () => console.log("Abort!"),
             memory: memory,
