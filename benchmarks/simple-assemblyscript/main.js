@@ -6,7 +6,7 @@ const memory = new WebAssembly.Memory({
 function init_wasm(wasm_path, importObj) {
 	// returns a promise that has webassembly result for the module that's
 	// passed in.
-	if(WebAssembly.instantiateStreaming) {
+	if (WebAssembly.instantiateStreaming) {
 		return WebAssembly.instantiateStreaming(
 			fetch(wasm_path), importObj)
 	} else {
@@ -26,7 +26,6 @@ function returnSharedBufferjs(
 		main: {
 			canvas_width,
 			canvas_height,
-			ITER_CONST:1000,
 			START_X_TOTAL,
 			START_Y_TOTAL,
 			WINDOW
@@ -38,7 +37,7 @@ function returnSharedBufferjs(
 			memory: memory
 		},
 	}
-	return init_wasm("benchmarks/simple-assemblyscript/out/main.wasm", importObj).then(result => 
+	return init_wasm("benchmarks/simple-assemblyscript/out/main.wasm", importObj).then(result =>
 		draw(0, canvas_width, canvas_height)
 	).catch(console.error);
 }
@@ -51,10 +50,12 @@ function draw(arrayptr, WIDTH, HEIGHT) {
 	const tempmem = new Int16Array(memory.buffer)
 	const imageArrayMemory = tempmem.slice(arr_start, arr_end);
 	const arr = new Uint8ClampedArray(WIDTH * HEIGHT * 4);
-	imageArrayMemory.forEach(
-		(val, i) => {
-				arr[4 * i + 0] = val; arr[4 * i + 1] = val; arr[4 * i + 2] = val; arr[4 * i + 3] = 255;
-		});
+	imageArrayMemory.forEach((val, i) => {
+		arr[4 * i + 0] = val;
+		arr[4 * i + 1] = val;
+		arr[4 * i + 2] = val;
+		arr[4 * i + 3] = 255;
+	});
 
 	let imageData = new ImageData(arr, WIDTH, HEIGHT);
 	return imageData;

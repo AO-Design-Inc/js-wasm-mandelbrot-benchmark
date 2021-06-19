@@ -1,9 +1,10 @@
-declare const canvas_width: i32;
-declare const canvas_height: i32;
-declare const ITER_CONST: i32;
-declare const START_X_TOTAL:f32
-declare const START_Y_TOTAL:f32
-declare const WINDOW:f32
+declare const canvas_width:  i32
+declare const canvas_height: i32
+declare const START_X_TOTAL: f32
+declare const START_Y_TOTAL: f32
+declare const WINDOW: f32
+
+const ITER_CONST = 1000
 
 @unmanaged
 class Complex {
@@ -37,12 +38,10 @@ class Complex {
 		return this
 	}
 
-
-	set(real:f64,imag:f64): void {
-		this.real = real;
-		this.imag = imag;
+	set(real: f64, imag: f64): void {
+		this.real = real
+		this.imag = imag
 	}
-
 }
 
 const z = new Complex()
@@ -55,9 +54,9 @@ function mandelbrot(real: f64, imag: f64): i16 {
 
 	let count = 0;
 	while (z.mag() <= 2 && count < ITER_CONST) {
-		z.mul(z).add(cplx); // z = z^2 + cplx
+		z.mul(z).add(cplx) // z = z^2 + cplx
 	}
-	return <i16>count;
+	return <i16>count
 }
 
 const step_X = WINDOW / f32(canvas_width);

@@ -1,11 +1,12 @@
 declare const canvas_width:  i32
 declare const canvas_height: i32
-declare const ITER_CONST: i32
 declare const DIV_CLASS: u8
 declare const N_THREADS: u8
 declare const START_X_TOTAL: f32
 declare const START_Y_TOTAL: f32
 declare const WINDOW: f32
+
+const ITER_CONST = 1000
 
 @inline
 function mandelbrot(c_r:f64, c_i:f64):i8{

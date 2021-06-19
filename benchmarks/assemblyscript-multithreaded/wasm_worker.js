@@ -1,6 +1,6 @@
 onmessage = ({data}) => {
-    const {n_worker, n_threads, memory, width, height, ITER_CONST, START_X_TOTAL, START_Y_TOTAL, WINDOW} = data;
-    WebAssembly.instantiateStreaming( 
+    const {n_worker, n_threads, memory, width, height, START_X_TOTAL, START_Y_TOTAL, WINDOW} = data;
+    WebAssembly.instantiateStreaming(
     fetch('build/mandel_final.wasm'), {
 		env: {
             abort: () => console.log("Abort!"),
@@ -12,7 +12,6 @@ onmessage = ({data}) => {
             canvas_height: height,
             DIV_CLASS: n_worker,
             N_THREADS: n_threads,
-            ITER_CONST,
             START_X_TOTAL,
             START_Y_TOTAL,
             WINDOW
