@@ -1,5 +1,7 @@
 'use strict';
 
+let start,end = 0
+
 // this version uses the most memory allocation, creating a new object every time 
 // a complex number is added or multiplied
 
@@ -44,6 +46,7 @@ function mandelbrot(cplx) {
 
 // returns ImageData object with Mandelbrot
 function returnNaivejs(x_start, y_start, canvas_width, canvas_height, window) {
+  start = performance.now()
 
   const step_X = window/canvas_width;
   const step_Y = window/canvas_height;
@@ -67,6 +70,8 @@ function returnNaivejs(x_start, y_start, canvas_width, canvas_height, window) {
         count++;
     }
   }
+  
+  end = performance.now()
 
   return new ImageData(new Uint8ClampedArray(points_array), canvas_width, canvas_height);
 

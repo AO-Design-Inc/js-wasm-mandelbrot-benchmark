@@ -35,22 +35,24 @@ function mandelbrot_simd(c_rl:v128,c_il:v128):v128{
     return count;
 }
 
-let memcounter = 0
-const step_X:f32 = WINDOW/f32(canvas_width);
-const step_Y:f32 = WINDOW/f32(canvas_height);
-let a1 = f32x4(0,0,0,0);
-let a2 = f32x4(0,0,0,0);
-for (let y = START_Y_TOTAL, count_y = 0; count_y < canvas_height; y += step_Y, count_y++){
-    a1 = v128.splat<f32>(y);
-    for(let x:f32 = START_X_TOTAL, count_x = 0; count_x < canvas_width; x+=4*step_X, count_x+=4){ 
-        a2 = v128.replace_lane<f32>(
-		v128.replace_lane<f32>(
-			v128.replace_lane<f32>(
-				v128.replace_lane<f32>(a2,3,x+3*step_X),
-				2,x+2*step_X),
-				1,x+step_X),
-				0,x);
-        v128.store((memcounter), mandelbrot_simd(a2,a1))
-        memcounter+=16
-    }
+export function compute(): void {
+	let memcounter = 0
+	const step_X:f32 = WINDOW/f32(canvas_width);
+	const step_Y:f32 = WINDOW/f32(canvas_height);
+	let a1 = f32x4(0,0,0,0);
+	let a2 = f32x4(0,0,0,0);
+	for (let y = START_Y_TOTAL, count_y = 0; count_y < canvas_height; y += step_Y, count_y++){
+		a1 = v128.splat<f32>(y);
+		for(let x:f32 = START_X_TOTAL, count_x = 0; count_x < canvas_width; x+=4*step_X, count_x+=4){ 
+			a2 = v128.replace_lane<f32>(
+				v128.replace_lane<f32>(
+					v128.replace_lane<f32>(
+						v128.replace_lane<f32>(a2,3,x+3*step_X),
+						2,x+2*step_X),
+						1,x+step_X),
+						0,x);
+						v128.store((memcounter), mandelbrot_simd(a2,a1))
+						memcounter+=16
+		}
+	}
 }

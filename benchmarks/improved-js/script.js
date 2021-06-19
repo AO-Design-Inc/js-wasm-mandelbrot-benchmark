@@ -1,5 +1,7 @@
 'use strict';
 
+let start,end = 0
+
 class Complex {
   constructor(real, imag){
     this.real = real;
@@ -42,6 +44,7 @@ function mandelbrot(cplx) {
 }
 
 function returnImprovedjs(x_start, y_start, canvas_width, canvas_height, window) {
+  start = performance.now()
 
   const step_X = window/canvas_width;
   const step_Y = window/canvas_height;
@@ -66,6 +69,7 @@ function returnImprovedjs(x_start, y_start, canvas_width, canvas_height, window)
     }
   }
 
+  end = performance.now()
   // creates new imageData object and puts it on the canvas
   return new ImageData(new Uint8ClampedArray(points_array), canvas_width, canvas_height);
 

@@ -5,14 +5,12 @@ const START_Y_TOTAL =  -0.48857;
 const WINDOW = 0.01;
 
 let imageData;
-let start;
-let end;
 let scriptImported = false;
 
 onmessage = async function(e) {
     console.log('Message received from main script');
 
-    start = performance.now();
+    //start = performance.now();
     
     switch (e.data[0]){
         case 'naivejs':
@@ -73,8 +71,9 @@ onmessage = async function(e) {
             break;
     }
 
-    end = performance.now();
+    //end = performance.now();
 
-    console.log('Posting message back to main script');
-    postMessage([imageData, end-start]);
+	console.log('Posting message back to main script');
+	//end, start are defined invisibly in worker, bad practice.
+	postMessage([imageData, end-start]);
 }

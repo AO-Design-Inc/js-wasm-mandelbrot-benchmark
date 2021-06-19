@@ -7,6 +7,7 @@ const memory = new WebAssembly.Memory({
 const ITER_CONST = 1000;
 const N_THREADS = 4;
 const workers = new Array(N_THREADS);
+let start, end = 0;
 for(let i=0; i<N_THREADS; i++) {
     workers[i] = new Worker("benchmarks/assemblyscript-multithreaded/wasm_worker.js");
 }
@@ -21,7 +22,7 @@ async function computeAndDrawMandel(
 ) {
 	const mod = await compileWasmAndGetModule;
 	let donecount = 0;
-	const startTime = performance.now()
+	start = performance.now()
 	for (let i =0; i<N_THREADS; i++) {
 		console.log(i)
 		//const worker = new Worker("wasm_worker.js")
@@ -43,6 +44,7 @@ async function computeAndDrawMandel(
 		workers.forEach( (worker) => worker.onmessage = e => {
 			donecount++
 			if(donecount == N_THREADS) {
+				end = performance.now()
 				res(draw(0, WIDTH, HEIGHT))
 			}
 		})

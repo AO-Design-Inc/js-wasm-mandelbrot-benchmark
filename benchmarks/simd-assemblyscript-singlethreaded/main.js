@@ -3,6 +3,9 @@ const memory = new WebAssembly.Memory({
 	maximum: 80
 });
 
+//defined for performance measurement, depended on by worker that loads them
+let start, end = 0;
+
 function init_wasm(wasm_path, importObj) {
 	// returns a promise that has webassembly result for the module that's
 	// passed in.
@@ -38,9 +41,12 @@ function returnSharedBufferjs(
 			memory: memory
 		},
 	}
-	return init_wasm("./benchmarks/simd-assemblyscript-singlethreaded/build/mandel_final.wasm", importObj).then(result => 
-		draw(0, canvas_width, canvas_height)
-	).catch(console.error);
+	return init_wasm("./benchmarks/simd-assemblyscript-singlethreaded/build/mandel_final.wasm", importObj).then(result => { 
+		start = performance.now()
+		result.instance.exports.compute();
+		end = performance.now()
+		return draw(0, canvas_width, canvas_height)
+	}).catch(console.error);
 }
 
 

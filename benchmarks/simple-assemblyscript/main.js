@@ -38,9 +38,12 @@ function returnSharedBufferjs(
 			memory: memory
 		},
 	}
-	return init_wasm("benchmarks/simple-assemblyscript/out/main.wasm", importObj).then(result => 
-		draw(0, canvas_width, canvas_height)
-	).catch(console.error);
+	return init_wasm("benchmarks/simple-assemblyscript/out/main.wasm", importObj).then(result => {
+		start = performance.now()
+		result.instance.exports.compute()
+		end = performance.now()
+		return draw(0, canvas_width, canvas_height)
+	}).catch(console.error);
 }
 
 
