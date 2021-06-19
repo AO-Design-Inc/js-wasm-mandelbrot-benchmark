@@ -1,4 +1,5 @@
 onmessage = ({data}) => {
+
     const {n_worker, n_threads, memory, width, height, ITER_CONST, START_X_TOTAL, START_Y_TOTAL, WINDOW, mod} = data;
     WebAssembly.instantiate( 
     mod, {

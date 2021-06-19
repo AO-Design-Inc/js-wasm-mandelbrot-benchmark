@@ -1,22 +1,20 @@
-declare const canvas_width: i32;
-declare const canvas_height: i32;
-declare const ITER_CONST: i16;
-declare const START_X_TOTAL:f32
-declare const START_Y_TOTAL:f32
-declare const WINDOW:f32
+declare const canvas_width:  i32
+declare const canvas_height: i32
+declare const START_X_TOTAL: f32
+declare const START_Y_TOTAL: f32
+declare const WINDOW: f32
+
+const ITER_CONST = 1000
 
 @unmanaged
 class Complex {
-	real: f64 = 0;
-	imag: f64 = 0;
-
-	constructor(real:f64, imag:f64){
-		this.real = real;
-		this.imag = imag;
-	}
+	constructor(
+		public real: f64 = 0,
+		public imag: f64 = 0
+	) {}
 
 	@inline
-	add(cplx: Complex): Complex {
+	add(cplx: Complex): this {
 		this.real = this.real + cplx.real;
 		this.imag = this.imag + cplx.imag;
 		return this;
@@ -24,42 +22,41 @@ class Complex {
 
 	@inline
 	mag(): f64 {
-		return Math.sqrt(this.real * this.real + this.imag * this.imag)
+		let re = this.real
+		let im = this.imag
+		return Math.sqrt(re * re + im * im)
 	}
 
 	@inline
-	mul(cplx: Complex): Complex {
-		const __tempr  = this.real*cplx.real - this.imag*cplx.imag;
-		const __tempi = this.imag*cplx.real + this.real*cplx.imag;
-		this.real = __tempr;
-		this.imag = __tempi;
+	mul(cplx: Complex): this {
+		let re1 = this.real
+		let im1 = this.imag
+		let re2 = cplx.real
+		let im2 = cplx.imag
+		this.real = re1 * re2 - im1 * im2
+		this.imag = im1 * re2 + re1 * im2
 		return this
 	}
 
-
-	set(real:f64,imag:f64): void {
-		this.real = real;
-		this.imag = imag;
+	set(real: f64, imag: f64): void {
+		this.real = real
+		this.imag = imag
 	}
-
 }
 
-const z:Complex = new Complex(0,0);
-const cplx:Complex = new Complex(0,0)
+const z = new Complex()
+const cplx = new Complex()
 
 @inline
-function mandelbrot(real:f64,imag:f64):i16{
-	z.set(0,0)
-	cplx.set(real,imag)
+function mandelbrot(real: f64, imag: f64): i16 {
+	z.set(0, 0)
+	cplx.set(real, imag)
 
-	let count:i16 = 0;
-	for (; z.mag() <= 2; count++) {
-		(z.mul(z)).add(cplx); // z = z^2 + cplx
-		if (count > ITER_CONST) {
-			break;
-		}
+	let count = 0;
+	while (z.mag() <= 2 && count < ITER_CONST) {
+		z.mul(z).add(cplx) // z = z^2 + cplx
 	}
-	return count;
+	return <i16>count
 }
 
 export function compute(): void {
