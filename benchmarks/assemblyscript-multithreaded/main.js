@@ -11,7 +11,15 @@ for(let i=0; i<N_THREADS; i++) {
     workers[i] = new Worker("benchmarks/assemblyscript-multithreaded/wasm_worker.js");
 }
 
-function computeAndDrawMandel(START_X_TOTAL, START_Y_TOTAL, WIDTH, HEIGHT, WINDOW) {
+const compileWasmAndGetModule = WebAssembly.compileStreaming(
+	fetch("benchmarks/assemblyscript-multithreaded/build/mandel_final.wasm")
+);
+
+
+async function computeAndDrawMandel(
+	START_X_TOTAL, START_Y_TOTAL, WIDTH, HEIGHT, WINDOW
+) {
+	const mod = await compileWasmAndGetModule;
 	let donecount = 0;
 	const startTime = performance.now()
 	for (let i =0; i<N_THREADS; i++) {
@@ -26,8 +34,8 @@ function computeAndDrawMandel(START_X_TOTAL, START_Y_TOTAL, WIDTH, HEIGHT, WINDO
 			ITER_CONST,
 			START_X_TOTAL, 
 			START_Y_TOTAL,
-			WINDOW
-
+			WINDOW,
+			mod
 		})
 	}
 
