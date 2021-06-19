@@ -5,7 +5,7 @@ const memory = new WebAssembly.Memory({
 });
 
 const ITER_CONST = 1000;
-const N_THREADS = 8;
+const N_THREADS = 4;
 const workers = new Array(N_THREADS);
 for(let i=0; i<N_THREADS; i++) {
     workers[i] = new Worker("benchmarks/assemblyscript-multithreaded/wasm_worker.js");
