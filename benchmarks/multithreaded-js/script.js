@@ -1,3 +1,4 @@
+let start, end = 0;
 function createWorker(parameters){
   return new Promise((resolve) => {
     var worker = new Worker("benchmarks/multithreaded-js/sharedworker.js");
@@ -11,6 +12,8 @@ function createWorker(parameters){
 }
 
 async function returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, CANVAS_HEIGHT, WINDOW){
+  
+  start = performance.now()
   
   const X_LEN = CANVAS_WIDTH;
   const Y_LEN = CANVAS_HEIGHT;
@@ -36,6 +39,7 @@ async function returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, 
   }
 
   const promises_done = await Promise.all(promises);
+  end = performance.now()
   const array = new Uint8ClampedArray(sharedArray);
   return new ImageData(array, CANVAS_WIDTH, CANVAS_HEIGHT);
 }

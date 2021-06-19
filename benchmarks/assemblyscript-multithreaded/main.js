@@ -6,13 +6,26 @@ const memory = new WebAssembly.Memory({
 
 const N_THREADS = 4;
 const workers = new Array(N_THREADS);
-for (let i = 0; i < N_THREADS; i++) {
-	workers[i] = new Worker("benchmarks/assemblyscript-multithreaded/wasm_worker.js");
+
+let start, end = 0;
+for(let i=0; i < N_THREADS; i++) {
+    workers[i] = new Worker("benchmarks/assemblyscript-multithreaded/wasm_worker.js");
 }
 
-function computeAndDrawMandel(START_X_TOTAL, START_Y_TOTAL, WIDTH, HEIGHT, WINDOW) {
+const compileWasmAndGetModule = WebAssembly.compileStreaming(
+	fetch("benchmarks/assemblyscript-multithreaded/build/mandel_final.wasm")
+);
+
+
+async function computeAndDrawMandel(
+	START_X_TOTAL, START_Y_TOTAL, WIDTH, HEIGHT, WINDOW
+) {
+	const mod = await compileWasmAndGetModule;
 	let donecount = 0;
+
+	start = performance.now()
 	for (let i = 0; i < N_THREADS; i++) {
+		console.log(i)
 		//const worker = new Worker("wasm_worker.js")
 		workers[i].postMessage({
 			n_worker: i,
@@ -22,14 +35,16 @@ function computeAndDrawMandel(START_X_TOTAL, START_Y_TOTAL, WIDTH, HEIGHT, WINDO
 			height: HEIGHT,
 			START_X_TOTAL,
 			START_Y_TOTAL,
-			WINDOW
+			WINDOW,
+			mod
 		})
 	}
 
 	return new Promise((res, rej) => {
 		workers.forEach((worker) => worker.onmessage = e => {
 			donecount++
-			if (donecount === N_THREADS) {
+			if(donecount === N_THREADS) {
+				end = performance.now()
 				res(draw(0, WIDTH, HEIGHT))
 			}
 		})
