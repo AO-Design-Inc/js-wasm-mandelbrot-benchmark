@@ -265,7 +265,7 @@ async function init(input) {
     };
 
     if (typeof input === 'string' || (typeof Request === 'function' && input instanceof Request) || (typeof URL === 'function' && input instanceof URL)) {
-        input = fetch(input,{cache:'force-cache'});
+        input = fetch(input);
     }
 
 

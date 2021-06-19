@@ -1,3 +1,6 @@
+/*
+ * Author: Abhishek Cherath, email: abhicherath@gmail.com
+ */
 declare const canvas_width: i32;
 declare const canvas_height: i32;
 declare const ITER_CONST: i32;
