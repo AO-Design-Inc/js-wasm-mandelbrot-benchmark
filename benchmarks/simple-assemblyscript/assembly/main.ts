@@ -1,22 +1,19 @@
 declare const canvas_width: i32;
 declare const canvas_height: i32;
-declare const ITER_CONST: i16;
+declare const ITER_CONST: i32;
 declare const START_X_TOTAL:f32
 declare const START_Y_TOTAL:f32
 declare const WINDOW:f32
 
 @unmanaged
 class Complex {
-	real: f64 = 0;
-	imag: f64 = 0;
-
-	constructor(real:f64, imag:f64){
-		this.real = real;
-		this.imag = imag;
-	}
+	constructor(
+		public real: f64 = 0,
+		public imag: f64 = 0
+	) {}
 
 	@inline
-	add(cplx: Complex): Complex {
+	add(cplx: Complex): this {
 		this.real = this.real + cplx.real;
 		this.imag = this.imag + cplx.imag;
 		return this;
@@ -24,15 +21,19 @@ class Complex {
 
 	@inline
 	mag(): f64 {
-		return Math.sqrt(this.real * this.real + this.imag * this.imag)
+		let re = this.real
+		let im = this.imag
+		return Math.sqrt(re * re + im * im)
 	}
 
 	@inline
-	mul(cplx: Complex): Complex {
-		const __tempr  = this.real*cplx.real - this.imag*cplx.imag;
-		const __tempi = this.imag*cplx.real + this.real*cplx.imag;
-		this.real = __tempr;
-		this.imag = __tempi;
+	mul(cplx: Complex): this {
+		let re1 = this.real
+		let im1 = this.imag
+		let re2 = cplx.real
+		let im2 = cplx.imag
+		this.real = re1 * re2 - im1 * im2
+		this.imag = im1 * re2 + re1 * im2
 		return this
 	}
 
@@ -44,28 +45,25 @@ class Complex {
 
 }
 
-const z:Complex = new Complex(0,0);
-const cplx:Complex = new Complex(0,0)
+const z = new Complex()
+const cplx = new Complex()
 
 @inline
-function mandelbrot(real:f64,imag:f64):i16{
-	z.set(0,0)
-	cplx.set(real,imag)
+function mandelbrot(real: f64, imag: f64): i16 {
+	z.set(0, 0)
+	cplx.set(real, imag)
 
-	let count:i16 = 0;
-	for (; z.mag() <= 2; count++) {
-		(z.mul(z)).add(cplx); // z = z^2 + cplx
-		if (count > ITER_CONST) {
-			break;
-		}
+	let count = 0;
+	while (z.mag() <= 2 && count < ITER_CONST) {
+		z.mul(z).add(cplx); // z = z^2 + cplx
 	}
-	return count;
+	return <i16>count;
 }
 
-const step_X:f32 = WINDOW/f32(canvas_width);
-const step_Y:f32 = WINDOW/f32(canvas_height);
-for (let y = START_Y_TOTAL, count_y = 0; count_y < canvas_height; y += step_Y, count_y++){
-	for (let x = START_X_TOTAL, count_x = 0; count_x < canvas_width; x += step_X, count_x++){
-		store<i16>(2*(count_y*canvas_width + count_x), mandelbrot(x,y));
+const step_X = WINDOW / f32(canvas_width);
+const step_Y = WINDOW / f32(canvas_height);
+for (let y = START_Y_TOTAL, count_y = 0; count_y < canvas_height; y += step_Y, count_y++) {
+	for (let x = START_X_TOTAL, count_x = 0; count_x < canvas_width; x += step_X, count_x++) {
+		store<i16>(2 * (count_y * canvas_width + count_x), mandelbrot(x, y));
 	}
 }
