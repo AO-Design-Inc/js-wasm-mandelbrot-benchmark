@@ -50,12 +50,26 @@ onmessage = async function(e) {
             }
             imageData = await returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW);
             break;
-	    case 'assemblyscript-multithreaded':
+        case 'assemblyscript-multithreaded':
             if (!scriptImported) {
                 self.importScripts("/benchmarks/assemblyscript-multithreaded/main.js");
                 scriptImported = true;
             }
             imageData = await computeAndDrawMandel(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW);
+            break;
+        case 'assemblyscript-optimized-single':
+            if (!scriptImported) {
+                self.importScripts("/benchmarks/optimized-assemblyscript-singlethreaded/main.js");
+                scriptImported = true;
+            }
+            imageData = await returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW);
+            break;
+        case 'simd-assemblyscript-single':
+            if (!scriptImported) {
+                self.importScripts("./benchmarks/simd-assemblyscript-singlethreaded/main.js");
+                scriptImported=true;
+            }
+            imageData = await returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, e.data[1], e.data[2], WINDOW);
             break;
     }
 
