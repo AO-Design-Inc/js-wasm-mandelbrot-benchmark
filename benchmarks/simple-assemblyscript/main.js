@@ -19,6 +19,7 @@ function init_wasm(wasm_path, importObj) {
 }
 
 
+let start,end = 0;
 function returnSharedBufferjs(
 	START_X_TOTAL, START_Y_TOTAL, canvas_width, canvas_height, WINDOW
 ) {
