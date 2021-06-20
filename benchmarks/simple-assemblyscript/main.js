@@ -39,7 +39,7 @@ function returnSharedBufferjs(
 			memory: memory
 		},
 	}
-	return init_wasm("benchmarks/simple-assemblyscript/out/main.wasm", importObj).then(result => {
+	return init_wasm("./benchmarks/simple-assemblyscript/out/main.wasm", importObj).then(result => {
 		start = performance.now()
 		result.instance.exports.compute()
 		end = performance.now()
