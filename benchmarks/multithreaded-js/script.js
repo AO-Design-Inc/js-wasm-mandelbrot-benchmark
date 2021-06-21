@@ -1,19 +1,18 @@
+//Abhi Allu
 let start, end = 0;
-function createWorker(parameters){
-  return new Promise((resolve) => {
-    var worker = new Worker("benchmarks/multithreaded-js/sharedworker.js");
-
-    worker.postMessage(parameters);
-
-    worker.onmessage = function(){
-      resolve("worker finished");
-    }
-  });
+const N_THREADS = 4;
+const workers = new Array(N_THREADS);
+for(let i=0; i<N_THREADS; i++) 
+{
+  workers[i] = new Worker("benchmarks/multithreaded-js/sharedworker.js");
 }
 
-async function returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, CANVAS_HEIGHT, WINDOW){
+async function returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, CANVAS_HEIGHT, WINDOW)
+{
   
   start = performance.now()
+  var donecount = 0;
+
   
   const X_LEN = CANVAS_WIDTH;
   const Y_LEN = CANVAS_HEIGHT;
@@ -31,16 +30,24 @@ async function returnSharedBufferjs(START_X_TOTAL, START_Y_TOTAL, CANVAS_WIDTH, 
   var parameters = {START_X_TOTAL,START_Y_TOTAL, START_YC, STEP_X, STEP_Y, N_ROWS_PER_THREAD, X_LEN, sharedArray};
   var promises = [];
 
-  for(let i=0; i<workerCount; i++){
-
+  for (let i =0; i<N_THREADS; i++) 
+  {
     parameters.START_YC = N_ROWS_PER_THREAD * i;
-
-    promises.push(createWorker(parameters));
+    workers[i].postMessage(parameters);
   }
-
-  const promises_done = await Promise.all(promises);
-  end = performance.now()
-  const array = new Uint8ClampedArray(sharedArray);
-  return new ImageData(array, CANVAS_WIDTH, CANVAS_HEIGHT);
+  
+  return new Promise((res, rej) => 
+  {
+		workers.forEach( (worker) => worker.onmessage = e => 
+    {
+			donecount++
+			if(donecount == N_THREADS)
+      {
+        end = performance.now()
+        const array = new Uint8ClampedArray(sharedArray);
+				res(new ImageData(array,CANVAS_WIDTH, CANVAS_HEIGHT))
+			}
+		})
+	});
 }
 
