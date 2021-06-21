@@ -48,11 +48,11 @@ impl Complex {
 }
 
 fn in_mandelbrot(cplx: &Complex) -> u8 {
-    const ITER_CONST: i32 = 100;
+    const ITER_CONST: i32 = 1000;
     let mut z = build_complex(0.0, 0.0);
     let mut count: i32 = 0;
 
-    while z.mag() <= 2.0 && count < 1000 {
+    while z.mag() <= 2.0 && count < ITER_CONST {
         z = (z.square()).add(&cplx); // z = z^2 + cplx
         count += 1;
     }

@@ -13,6 +13,15 @@
 <body>
 
     <div>
+        <p style="color:gray">
+            Note: <b>This demo is only guaranteed to work on Firefox 89+ and Chrome 91+.</b>
+            It will not work Firefox if your computer uses the Mac M1 chip. 
+            On mobile, the demo only works on Chrome 91+. Safari does not have support 
+            for shared array buffers or SIMD instructions, so the multithreaded and SIMD versions 
+            will not work in Safari. 
+        </p>
+
+
         Show Me MandelBrot in: 
         
         <select name="version" id="version">
@@ -31,8 +40,9 @@
             assemblyscript </option>
         </select>
 
-        <p>Time to render: </p>
+        <p >Time to render: </p>
         <p id="time"></p>
+        
         <button id="refresh">Refresh this</button>
     </div>
     <canvas id="canvas" height="1000" width="1000" style="width:50%"></canvas>
