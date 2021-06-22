@@ -82,7 +82,7 @@ fn fill_mandelbrot(
     let y_step = window / (y_len as f64);
 
     for y in 0..y_len {
-		for x in 0..x_len {
+        for x in 0..x_len {
             // real and imaginary parts of complex number for
             // specified canvas pixel
             let x_com = start_x + x as f64 * x_step;
