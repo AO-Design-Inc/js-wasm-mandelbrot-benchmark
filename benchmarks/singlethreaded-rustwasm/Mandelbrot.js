@@ -281,7 +281,11 @@ async function init(input) {
 
 
 /* exported start, end, run_wrapper */
-/* globals init:true, run:true */
+/* eslint no-undef:"off" */
+
+/* turning off the undefined warning is generally a bad idea except in this
+ case because this file is ebing concatenated to a file with file definitions
+ in our hacky workaround */
 let start,
     end = 0;
 async function run_wrapper(START_X, START_Y, WIDTH, HEIGHT, WINDOW) {
