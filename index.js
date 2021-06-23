@@ -4,7 +4,6 @@ let ctx = canvas.getContext('2d');
 
 const selectElement = document.querySelector('#version');
 let selectedVersion = selectElement.value;
-let imageData;
 
 const WIDTH = canvas.width;
 const HEIGHT = canvas.height;

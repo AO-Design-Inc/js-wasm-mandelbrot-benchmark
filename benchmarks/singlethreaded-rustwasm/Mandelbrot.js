@@ -1,3 +1,4 @@
+/* eslint no-empty: "off" */
 
 let wasm;
 
@@ -279,20 +280,18 @@ async function init(input) {
 }
 
 
-let start,end = 0;
-async function run_wrapper(START_X, START_Y, WIDTH, HEIGHT, WINDOW){
+/* exported start, end, run_wrapper */
+/* globals init:true, run:true */
+let start,
+    end = 0;
+async function run_wrapper(START_X, START_Y, WIDTH, HEIGHT, WINDOW) {
+    await init('./benchmarks/singlethreaded-rustwasm/pkg/Mandelbrot_bg.wasm');
 
-	//let m = await wasm;
+    start = performance.now();
 
-	await init('./benchmarks/singlethreaded-rustwasm/pkg/Mandelbrot_bg.wasm');
+    let imageData = run(START_X, START_Y, WIDTH, HEIGHT, WINDOW);
 
-	start = performance.now()
+    end = performance.now();
 
-	let imageData = run(START_X, START_Y, WIDTH, HEIGHT, WINDOW); 
-
-	end = performance.now()
-
-	return imageData;
-
-
+    return imageData;
 }
